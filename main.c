@@ -4,8 +4,8 @@
 
 void Readparameter(int paramSize, char *parameter[]);
 char* FindPrefix(int paramSize, char* parameter[]);
-char FindInputFileName(int paramSize, char *parameter[]);
-char FindOutputFileName(int paramSize, char *parameter[]);
+char* FindInputFileName(int paramSize, char* parameter[]);
+char* FindOutputFileName(int paramSize, char* parameter[]);
 
 
 void PrintHelpMessage();
@@ -20,40 +20,79 @@ int main(int argc, char *argv[])
 
 void Readparameter(int paramSize, char *parameter[])
 {
+
+
+    typedef struct
+    {
+        char *prefix;
+        char *inputFileName;
+        char *outputFileName;
+    }ProgramParameter;
+
+    char *inputFileName = FindInputFileName(paramSize, parameter);
+    char *outputFileName = FindOutputFileName(paramSize, parameter);
     char *prefix = FindPrefix(paramSize, parameter);
 
-    struct Programparameter
-    {
-        char prefix;
-        char inputFileName;
-        char outputFileName;
-    };
+    ProgramParameter programParameters = {inputFileName, outputFileName, prefix};
 
-    //strcpy( prefix, FindPrefix(paramSize, parameter));
+    //strcpy (&programParameters.inputFileName, inputFileName);
+    ///strcpy (&programParameters.outputFileName, outputFileName);
 
-    printf("%s", prefix);
-    //inputFileName = FindInputFileName
+   printf("%s\n", programParameters.inputFileName);
+
+   printf("%s\n", programParameters.outputFileName);
+   printf("%s\n", programParameters.prefix);
+   //printf("%s\n", &programParameters.prefix);
+
+
+
+
 }
 
 char* FindPrefix(int paramSize, char* parameter[])
 {
-    printf("%s", parameter[2]);
+    int i = 0;
 
-    char *ret = malloc(strlen(parameter[2]));
-    ret = parameter[2];
+    do
+    {
+        i++;
+    }while (strcmp(parameter[i], "-f"));
 
-    return ret;
+    char *prefix = malloc(strlen(parameter[i+1]));
+    prefix = parameter[i+1];
+
+    return prefix;
 
 }
 
-char FindInputFileName(int paramSize, char *parameter[])
+char* FindInputFileName(int paramSize, char* parameter[])
 {
+    int i = 0;
 
+    do
+    {
+        i++;
+    }while (strcmp(parameter[i], "-i"));
+
+    char *inputFileName = malloc(strlen(parameter[i+1]));
+    inputFileName = parameter[i+1];
+
+    return inputFileName;
 }
 
-char FindOutputFileName(int paramSize, char *parameter[])
+char* FindOutputFileName(int paramSize, char* parameter[])
 {
+    int i = 0;
 
+    do
+    {
+        i++;
+    }while (strcmp(parameter[i], "-o"));
+
+    char *outputFileName = malloc(strlen(parameter[i+1]));
+    outputFileName = parameter[i+1];
+
+    return outputFileName;
 }
 
 

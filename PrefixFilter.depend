@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1427982388 source:c:\users\bartek\documents\moje dokumenty\project\prefixfilter\prefixfilter\main.c
+1427993602 source:c:\users\bartek\documents\moje dokumenty\project\prefixfilter\prefixfilter\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
