@@ -2,25 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-void Readparameter(int paramSize, char *parameter[]);
-char* FindPrefix(int paramSize, char* parameter[]);
-char* FindInputFileName(int paramSize, char* parameter[]);
-char* FindOutputFileName(int paramSize, char* parameter[]);
-
-
+//PARAMETERS HANDLING
+char* Prefix(int paramSize, char* parameter[]);
+char* InputFileName(int paramSize, char* parameter[]);
+char* OutputFileName(int paramSize, char* parameter[]);
+void PassWordsWithPrefixes(char* fileLine, char* outputFileName, char* prefix);
 void PrintHelpMessage();
+
+void ReadFileLineByLine(char* inputFileName, char* outputFileName, char* prefix);
 
 int main(int argc, char *argv[])
 {
-
-    Readparameter(argc, argv);
-
-    return 0;
-}
-
-void Readparameter(int paramSize, char *parameter[])
-{
-
 
     typedef struct
     {
@@ -29,27 +21,18 @@ void Readparameter(int paramSize, char *parameter[])
         char *outputFileName;
     }ProgramParameter;
 
-    char *inputFileName = FindInputFileName(paramSize, parameter);
-    char *outputFileName = FindOutputFileName(paramSize, parameter);
-    char *prefix = FindPrefix(paramSize, parameter);
-
-    ProgramParameter programParameters = {inputFileName, outputFileName, prefix};
-
-    //strcpy (&programParameters.inputFileName, inputFileName);
-    ///strcpy (&programParameters.outputFileName, outputFileName);
-
-   printf("%s\n", programParameters.inputFileName);
-
-   printf("%s\n", programParameters.outputFileName);
-   printf("%s\n", programParameters.prefix);
-   //printf("%s\n", &programParameters.prefix);
+    ProgramParameter programParameter = {Prefix(argc, argv)
+                                        , InputFileName(argc, argv)
+                                        , OutputFileName(argc, argv)};
 
 
-
-
+    ReadFileLineByLine(programParameter.inputFileName, programParameter.outputFileName, programParameter.prefix);
+    return 0;
 }
 
-char* FindPrefix(int paramSize, char* parameter[])
+
+
+char* Prefix(int paramSize, char* parameter[])
 {
     int i = 0;
 
@@ -65,7 +48,7 @@ char* FindPrefix(int paramSize, char* parameter[])
 
 }
 
-char* FindInputFileName(int paramSize, char* parameter[])
+char* InputFileName(int paramSize, char* parameter[])
 {
     int i = 0;
 
@@ -80,7 +63,7 @@ char* FindInputFileName(int paramSize, char* parameter[])
     return inputFileName;
 }
 
-char* FindOutputFileName(int paramSize, char* parameter[])
+char* OutputFileName(int paramSize, char* parameter[])
 {
     int i = 0;
 
@@ -95,8 +78,72 @@ char* FindOutputFileName(int paramSize, char* parameter[])
     return outputFileName;
 }
 
+void ReadFileLineByLine(char* inputFileName, char* outputFileName, char* prefix)
+{
+    {
+    	FILE *inputFile;
+        char *fileLine;
+
+        inputFile = fopen(inputFileName ,"r");
+
+        if (!inputFile)
+            return 1;
+
+        while (fgets(fileLine,1000, inputFile)!=NULL)
+            PassWordsWithPrefixes(fileLine, outputFileName, prefix);
 
 
+
+		fclose(inputFile);
+    		return 0;
+	}
+}
+
+void PassWordsWithPrefixes(char* fileLine, char* outputFileName, char* prefix)
+{
+
+    FILE *outputFile;
+    outputFile = fopen(outputFileName, "a");
+
+    if (!inputFile)
+        return 1;
+
+    fprintf(output file, )
+
+    int i = 0;
+    int lineLength = strlen(fileLine);
+
+    while ((fileLine[i]!=' ') && (i != lineLength-1))
+    {
+        printf("%c", fileLine[i]);
+        i++;
+    }
+    printf("|||");
+
+    /*
+      char str[] ="- This, a sample string.";
+    char * pch;
+    printf ("Splitting string \"%s\" into tokens:\n",str);
+    pch = strtok (str," ,.-");
+    while (pch != NULL)
+    {
+        printf ("%s\n",pch);
+        pch = strtok (NULL, " ,.-");
+    }
+  return 0;*/
+
+
+
+
+    /*
+    123 12345
+    12345
+    1234567 12345
+    12345
+    1234567
+    */
+
+}
 void PrintHelpMessage()
 {
         printf("\t\t\tPOMOC PROGRAMU FILTR PRZEDROSTKOWY\t\t\n");
