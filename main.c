@@ -3,13 +3,13 @@
 #include <string.h>
 
 //PARAMETERS HANDLING
-char* Prefix(int paramSize, char* parameter[]);
-char* InputFileName(int paramSize, char* parameter[]);
-char* OutputFileName(int paramSize, char* parameter[]);
-void PassWordsWithPrefixes(char* fileLine, char* outputFileName, char* prefix);
+char* GetPrefix(int paramSize, char* parameter[]);
+char* GetInputFileName(int paramSize, char* parameter[]);
+char* GetOutputFileName(int paramSize, char* parameter[]);
+void PassWordsWithPrefixes(char *word, char* outputFileName, char* prefix);
 void PrintHelpMessage();
-
-void ReadFileLineByLine(char* inputFileName, char* outputFileName, char* prefix);
+void ReadFileWordByWord(char* inputFileName, char* outputFileName, char* prefix);
+int WordHasPrefix(char* word, char* prefix);
 
 int main(int argc, char *argv[])
 {
@@ -21,18 +21,17 @@ int main(int argc, char *argv[])
         char *outputFileName;
     }ProgramParameter;
 
-    ProgramParameter programParameter = {Prefix(argc, argv)
-                                        , InputFileName(argc, argv)
-                                        , OutputFileName(argc, argv)};
+    ProgramParameter programParameter = {GetPrefix(argc, argv)
+                                        , GetInputFileName(argc, argv)
+                                        , GetOutputFileName(argc, argv)};
 
-
-    ReadFileLineByLine(programParameter.inputFileName, programParameter.outputFileName, programParameter.prefix);
+    ReadFileWordByWord(programParameter.inputFileName, programParameter.outputFileName, programParameter.prefix);
     return 0;
 }
 
 
 
-char* Prefix(int paramSize, char* parameter[])
+char* GetPrefix(int paramSize, char* parameter[])
 {
     int i = 0;
 
@@ -48,7 +47,7 @@ char* Prefix(int paramSize, char* parameter[])
 
 }
 
-char* InputFileName(int paramSize, char* parameter[])
+char* GetInputFileName(int paramSize, char* parameter[])
 {
     int i = 0;
 
@@ -63,7 +62,7 @@ char* InputFileName(int paramSize, char* parameter[])
     return inputFileName;
 }
 
-char* OutputFileName(int paramSize, char* parameter[])
+char* GetOutputFileName(int paramSize, char* parameter[])
 {
     int i = 0;
 
@@ -78,71 +77,46 @@ char* OutputFileName(int paramSize, char* parameter[])
     return outputFileName;
 }
 
-void ReadFileLineByLine(char* inputFileName, char* outputFileName, char* prefix)
+void ReadFileWordByWord(char* inputFileName, char* outputFileName, char* prefix)
 {
     {
-    	FILE *inputFile;
-        char *fileLine;
+        FILE *inputFile;
+        char singleWord[100];
+        char c;
 
-        inputFile = fopen(inputFileName ,"r");
+        inputFile = fopen(inputFileName,"r");
 
-        if (!inputFile)
-            return 1;
+        do
+        {
+            c = fscanf(inputFile,"%s",singleWord);
+            PassWordsWithPrefixes(&singleWord, outputFileName, prefix);
+        } while (c != EOF);
 
-        while (fgets(fileLine,1000, inputFile)!=NULL)
-            PassWordsWithPrefixes(fileLine, outputFileName, prefix);
-
-
-
-		fclose(inputFile);
-    		return 0;
+         fclose(inputFile);
 	}
 }
-
-void PassWordsWithPrefixes(char* fileLine, char* outputFileName, char* prefix)
+int WordHasPrefix(char* word, char* prefix)
 {
+    int i;
+    int returnValue = 1;
 
-    FILE *outputFile;
-    outputFile = fopen(outputFileName, "a");
-
-    if (!inputFile)
-        return 1;
-
-    fprintf(output file, )
-
-    int i = 0;
-    int lineLength = strlen(fileLine);
-
-    while ((fileLine[i]!=' ') && (i != lineLength-1))
+    for (i = 1; i <strlen(prefix); i++)
     {
-        printf("%c", fileLine[i]);
-        i++;
+        if  (!(prefix[i] == word[i]))
+            return 0;
     }
-    printf("|||");
-
-    /*
-      char str[] ="- This, a sample string.";
-    char * pch;
-    printf ("Splitting string \"%s\" into tokens:\n",str);
-    pch = strtok (str," ,.-");
-    while (pch != NULL)
+    return 1;
+}
+void PassWordsWithPrefixes(char* word, char* outputFileName, char* prefix)
+{
+    if (WordHasPrefix(word, prefix))
     {
-        printf ("%s\n",pch);
-        pch = strtok (NULL, " ,.-");
+        FILE *outputFile;
+
+        outputFile = fopen(outputFileName, "a");
+        fprintf(outputFile, word);
+        fclose(outputFile);
     }
-  return 0;*/
-
-
-
-
-    /*
-    123 12345
-    12345
-    1234567 12345
-    12345
-    1234567
-    */
-
 }
 void PrintHelpMessage()
 {
