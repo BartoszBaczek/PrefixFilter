@@ -1,6 +1,9 @@
 #ifndef TEXTHANDLING_H_INCLUDED
 #define TEXTHANDLING_H_INCLUDED
+
 /*
+FUNCTIONS INCLUDED IN THIS HEADER FILE:
+
 char* GetPrefix(int paramSize, char* parameter[]);
 char* GetInputFileName(int paramSize, char* parameter[]);
 char* GetOutputFileName(int paramSize, char* parameter[]);
