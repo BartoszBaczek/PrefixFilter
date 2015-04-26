@@ -4,36 +4,54 @@
 /*
 FUNCTIONS INCLUDED IN THIS HEADER FILE:
 
-char* GetPrefix(int paramSize, char* parameter[]);
-char* GetInputFileName(int paramSize, char* parameter[]);
-char* GetOutputFileName(int paramSize, char* parameter[]);
+char* GetPrefix(int paramNumber, char* parameter[]);
+char* GetInputFileName(int paramNumber, char* parameter[]);
+char* GetOutputFileName(int paramNumber, char* parameter[]);
 void PassWordsWithPrefixes(char *word, char* outputFileName, char* prefix);
 void PrintHelpMessage();
 void CopyWordsToNewFile(char* inputFileName, char* outputFileName, char* prefix);
 int WordHasPrefix(char* word, char* prefix);
-int HelpIsNeeded(int paramSize, char* parameter[]);
+int HelpIsNeeded(int paramNumber, char* parameter[]);
+int Exists(char *fileName);
 */
 
 
 
 
-int HelpIsNeeded(int paramSize, char* parameter[])
+int HelpIsNeeded(int paramNumber, char* parameter[])
 {
-        int i = 0;
+        int i = 0, j;
         int returnValue = 0;
 
-        while (i <= paramSize-1)
+        while (i <= paramNumber-1)                      //
+        {                                               //
+            if (!strcmp(parameter[i], "-h"))            // Petla sprawdzajaca, czy
+            {                                           // uzytkownik podal jako
+                return 1;                               // parametr w dowolnym miejscu
+            }                                           // '-h'
+            i++;                                        //
+        }                                               //
+
+        for (i = 1; i < paramNumber; i++)
         {
-            if (!strcmp(parameter[i], "-h"))
+            for (j = 1; j < paramNumber; j++)
             {
-                returnValue = 1;
+                if (j != i)
+                    {
+                        if (!strcmp(parameter[i], parameter[j]))
+                        {
+                            printf("Podales ta sama nazwe dla pliku wejsciowego, jak i wyjsciowego.\n\n\n");
+                            return 1;
+                        }
+
+                    }
             }
-            i++;
         }
 
-        return returnValue;
+
+        return 0;
 }
-char* GetPrefix(int paramSize, char* parameter[])
+char* GetPrefix(int paramNumber, char* parameter[])
 {
     int i = 0;
 
@@ -49,7 +67,7 @@ char* GetPrefix(int paramSize, char* parameter[])
 
 }
 
-char* GetInputFileName(int paramSize, char* parameter[])
+char* GetInputFileName(int paramNumber, char* parameter[])
 {
     int i = 0;
 
@@ -64,7 +82,7 @@ char* GetInputFileName(int paramSize, char* parameter[])
     return inputFileName;
 }
 
-char* GetOutputFileName(int paramSize, char* parameter[])
+char* GetOutputFileName(int paramNumber, char* parameter[])
 {
     int i = 0;
 
@@ -99,15 +117,21 @@ void CopyWordsToNewFile(char* inputFileName, char* outputFileName, char* prefix)
         char singleWord[100];
         char c;
 
-        inputFile = fopen(inputFileName,"r");
-
-        do
+        if (Exists(inputFileName))
         {
-            c = fscanf(inputFile,"%s",singleWord);
-            PassWordsWithPrefixes(&singleWord, outputFileName, prefix);
-        } while (c != EOF);
+            inputFile = fopen(inputFileName,"r");
 
-         fclose(inputFile);
+            do
+            {
+                c = fscanf(inputFile,"%s",singleWord);
+                PassWordsWithPrefixes(&singleWord, outputFileName, prefix);
+            } while (c != EOF);
+
+            fclose(inputFile);
+        }
+        else
+            printf("Plik o nazwie '%s' nie istnieje. \nSprawdz czy podales podales poprawna nazwe pliku.  \nW celu uzyskania pomocy uzyj komendy 'PrefixFilter -h'.\n\n", inputFileName);
+
 	}
 }
 int WordHasPrefix(char* word, char* prefix)
@@ -129,6 +153,17 @@ void PrintHelpMessage()
         printf("1) Po przedrostku -o podaj nazwe pliku wyjsciowego (na przyklad -o Output.txt)\n");
         printf("2) Nastpenie po przedrostku -f podaj przedrostek (na przyklad -f pra)\n");
         printf("3) Po przedrostku -i podaj nazwe pliku wejsciowego z ktorego ma zostac \npobrany tekst (-i Input.txt)\n");
+}
+
+int Exists(char *fileName)
+{
+    FILE *file;
+    if (file = fopen(fileName, "r"))
+    {
+        fclose(file);
+        return 1;
+    }
+    return 0;
 }
 
 #endif // TEXTHANDLING_H_INCLUDED
