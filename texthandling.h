@@ -4,18 +4,19 @@
 /*
 FUNCTIONS INCLUDED IN THIS HEADER FILE:
 
+
+int HelpIsNeeded(int paramNumber, char* parameter[]);
+void PrintHelpMessage();
 char* GetPrefix(int paramNumber, char* parameter[]);
 char* GetInputFileName(int paramNumber, char* parameter[]);
 char* GetOutputFileName(int paramNumber, char* parameter[]);
-void PassWordsWithPrefixes(char *word, char* outputFileName, char* prefix);
-void PrintHelpMessage();
 void CopyWordsToNewFile(char* inputFileName, char* outputFileName, char* prefix);
-int WordHasPrefix(char* word, char* prefix);
-int HelpIsNeeded(int paramNumber, char* parameter[]);
 int Exists(char *fileName);
+void PassWordsWithPrefixes(char *word, char* outputFileName, char* prefix);
+int WordHasPrefix(char* word, char* prefix);
+
+
 */
-
-
 
 
 int HelpIsNeeded(int paramNumber, char* parameter[])
@@ -32,9 +33,9 @@ int HelpIsNeeded(int paramNumber, char* parameter[])
             i++;                                        //
         }                                               //
 
-        for (i = 1; i < paramNumber; i++)
-        {
-            for (j = 1; j < paramNumber; j++)
+        for (i = 1; i < paramNumber; i++)                                                                           //
+        {                                                                                                           //
+            for (j = 1; j < paramNumber; j++)                                                                       //
             {
                 if (j != i)
                     {
@@ -43,7 +44,6 @@ int HelpIsNeeded(int paramNumber, char* parameter[])
                             printf("Podales ta sama nazwe dla pliku wejsciowego, jak i wyjsciowego.\n\n\n");
                             return 1;
                         }
-
                     }
             }
         }
@@ -51,6 +51,16 @@ int HelpIsNeeded(int paramNumber, char* parameter[])
 
         return 0;
 }
+
+void PrintHelpMessage()
+{
+        printf("\t\t\tPOMOC PROGRAMU FILTR PRZEDROSTKOWY\t\t\n");
+        printf("W celu poprawnego uruchomienia programu, musisz zrobic nastepujace rzeczy:\n");
+        printf("1) Po przedrostku -o podaj nazwe pliku wyjsciowego (na przyklad -o Output.txt)\n");
+        printf("2) Nastpenie po przedrostku -f podaj przedrostek (na przyklad -f pra)\n");
+        printf("3) Po przedrostku -i podaj nazwe pliku wejsciowego z ktorego ma zostac \npobrany tekst (-i Input.txt)\n");
+}
+
 char* GetPrefix(int paramNumber, char* parameter[])
 {
     int i = 0;
@@ -97,18 +107,6 @@ char* GetOutputFileName(int paramNumber, char* parameter[])
     return outputFileName;
 }
 
-void PassWordsWithPrefixes(char* word, char* outputFileName, char* prefix)
-{
-    if (WordHasPrefix(word, prefix))
-    {
-        FILE *outputFile;
-
-        outputFile = fopen(outputFileName, "a");
-        fprintf(outputFile, word);
-        fprintf(outputFile, " ");
-        fclose(outputFile);
-    }
-}
 
 void CopyWordsToNewFile(char* inputFileName, char* outputFileName, char* prefix)
 {
@@ -134,6 +132,31 @@ void CopyWordsToNewFile(char* inputFileName, char* outputFileName, char* prefix)
 
 	}
 }
+
+int Exists(char *fileName)
+{
+    FILE *file;
+    if (file = fopen(fileName, "r"))
+    {
+        fclose(file);
+        return 1;
+    }
+    return 0;
+}
+
+void PassWordsWithPrefixes(char* word, char* outputFileName, char* prefix)
+{
+    if (WordHasPrefix(word, prefix))
+    {
+        FILE *outputFile;
+
+        outputFile = fopen(outputFileName, "a");
+        fprintf(outputFile, word);
+        fprintf(outputFile, " ");
+        fclose(outputFile);
+    }
+}
+
 int WordHasPrefix(char* word, char* prefix)
 {
     int i;
@@ -146,24 +169,8 @@ int WordHasPrefix(char* word, char* prefix)
     return 1;
 }
 
-void PrintHelpMessage()
-{
-        printf("\t\t\tPOMOC PROGRAMU FILTR PRZEDROSTKOWY\t\t\n");
-        printf("W celu poprawnego uruchomienia programu, musisz zrobic nastepujace rzeczy:\n");
-        printf("1) Po przedrostku -o podaj nazwe pliku wyjsciowego (na przyklad -o Output.txt)\n");
-        printf("2) Nastpenie po przedrostku -f podaj przedrostek (na przyklad -f pra)\n");
-        printf("3) Po przedrostku -i podaj nazwe pliku wejsciowego z ktorego ma zostac \npobrany tekst (-i Input.txt)\n");
-}
 
-int Exists(char *fileName)
-{
-    FILE *file;
-    if (file = fopen(fileName, "r"))
-    {
-        fclose(file);
-        return 1;
-    }
-    return 0;
-}
+
+
 
 #endif // TEXTHANDLING_H_INCLUDED
