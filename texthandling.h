@@ -33,20 +33,22 @@ int HelpIsNeeded(int paramNumber, char* parameter[])
             i++;                                        //
         }                                               //
 
+
+
         for (i = 1; i < paramNumber; i++)                                                                           //
         {                                                                                                           //
             for (j = 1; j < paramNumber; j++)                                                                       //
-            {
-                if (j != i)
-                    {
-                        if (!strcmp(parameter[i], parameter[j]))
-                        {
-                            printf("Podales ta sama nazwe dla pliku wejsciowego, jak i wyjsciowego.\n\n\n");
-                            return 1;
-                        }
-                    }
-            }
-        }
+            {                                                                                                       //
+                if (j != i)                                                                                         //  Petle sprawdzaja,
+                    {                                                                                               //  czy uzytkownik nie
+                        if (!strcmp(parameter[i], parameter[j]))                                                    //  uzyl dwóch takich
+                        {                                                                                           //  samych wartosci
+                            printf("Podales ta sama nazwe dla pliku wejsciowego, jak i wyjsciowego.\n\n\n");        //  parametrow (np.
+                            return 1;                                                                               //  takiej samej nazwy
+                        }                                                                                           //  plike wej. i pliku wyj.)
+                    }                                                                                               //
+            }                                                                                                       //
+        }                                                                                                           //
 
 
         return 0;

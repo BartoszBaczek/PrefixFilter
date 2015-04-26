@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-f pre -i ExampleInputFile.txt -o myOuput.txt" />
+				<Option parameters="-f pre -i ExampleInputFile.txt -o myOutput.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -34,6 +34,9 @@
 		</Compiler>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="texthandling.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions>
 			<code_completion />
