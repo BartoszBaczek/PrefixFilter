@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "texthandling.h"
+#ifndef TEXTHANDLING_H_INCLUDED
+#define TEXTHANDLING_H_INCLUDED
 /*
 char* GetPrefix(int paramSize, char* parameter[]);
 char* GetInputFileName(int paramSize, char* parameter[]);
@@ -13,34 +11,8 @@ int WordHasPrefix(char* word, char* prefix);
 int HelpIsNeeded(int paramSize, char* parameter[]);
 */
 
-int main(int argc, char *argv[])
-{
 
-    typedef struct
-    {
-        char *prefix;
-        char *inputFileName;
-        char *outputFileName;
-    }ProgramParameter;
 
-    if (HelpIsNeeded(argc, argv))
-    {
-        PrintHelpMessage();
-    }
-    else
-    {
-
-        ProgramParameter programParameter = {GetPrefix(argc, argv)
-                                        , GetInputFileName(argc, argv)
-                                        , GetOutputFileName(argc, argv)};
-
-        CopyWordsToNewFile(programParameter.inputFileName, programParameter.outputFileName, programParameter.prefix);
-
-    }
-
-    return 0;
-}
-/*
 
 int HelpIsNeeded(int paramSize, char* parameter[])
 {
@@ -104,6 +76,19 @@ char* GetOutputFileName(int paramSize, char* parameter[])
     return outputFileName;
 }
 
+void PassWordsWithPrefixes(char* word, char* outputFileName, char* prefix)
+{
+    if (WordHasPrefix(word, prefix))
+    {
+        FILE *outputFile;
+
+        outputFile = fopen(outputFileName, "a");
+        fprintf(outputFile, word);
+        fprintf(outputFile, " ");
+        fclose(outputFile);
+    }
+}
+
 void CopyWordsToNewFile(char* inputFileName, char* outputFileName, char* prefix)
 {
     {
@@ -133,18 +118,7 @@ int WordHasPrefix(char* word, char* prefix)
     }
     return 1;
 }
-void PassWordsWithPrefixes(char* word, char* outputFileName, char* prefix)
-{
-    if (WordHasPrefix(word, prefix))
-    {
-        FILE *outputFile;
 
-        outputFile = fopen(outputFileName, "a");
-        fprintf(outputFile, word);
-        fprintf(outputFile, " ");
-        fclose(outputFile);
-    }
-}
 void PrintHelpMessage()
 {
         printf("\t\t\tPOMOC PROGRAMU FILTR PRZEDROSTKOWY\t\t\n");
@@ -153,4 +127,5 @@ void PrintHelpMessage()
         printf("2) Nastpenie po przedrostku -f podaj przedrostek (na przyklad -f pra)\n");
         printf("3) Po przedrostku -i podaj nazwe pliku wejsciowego z ktorego ma zostac \npobrany tekst (-i Input.txt)\n");
 }
-*/
+
+#endif // TEXTHANDLING_H_INCLUDED

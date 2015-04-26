@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-f pra -i ExampleInputFile.txt -o ExampleOutputFile.txt" />
+				<Option parameters="-f pre -i ExampleInputFile.txt -o myOuput.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
